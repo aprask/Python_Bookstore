@@ -92,7 +92,6 @@ class Inventory:
                 if item.ID == id_1 or item.ID == id_2:  # Simplify the condition
                     print("Name: ", item.itemName)
                     compare_items.append(self.instantiate_item(item))
-
     @staticmethod
     def instantiate_item(item):
         return item.__class__(
