@@ -33,3 +33,4 @@ class Enter:
 
     def get_customer_payments(self):
         return self.payment_types
+
