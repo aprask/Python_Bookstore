@@ -5,6 +5,7 @@ class Enter:
     client: Client
     client_list = []
     payment_types = []
+    customer_payments = []
 
     def __init__(self, client):
         self.client = client
@@ -32,5 +33,5 @@ class Enter:
         self.client = changed_client
 
     def get_customer_payments(self):
-        return self.payment_types
+        return self.customer_payments
 

@@ -1,7 +1,7 @@
 from Commands import Enter
 from Commands.User import Client
 from Commands.User import Bank
-
+from Commands.User.Upgrade import Upgrade
 
 class Registrar:
     order_total: float
@@ -9,6 +9,8 @@ class Registrar:
     customer_line = []
     line_total: int
     client: Client
+    bank: Bank
+    upgrade: Upgrade
 
     def enter_store(self, client):
         self.enter(client)
@@ -44,5 +46,48 @@ class Registrar:
     def proceed_with_order():
         return True
 
-    def handle_bank(self, payment, client):
-        bank: Bank(Registrar.enter, Registrar.client)
+    def handle_bank(self, payment, client, enter):
+        Registrar.bank(self.enter, self.client)
+        Registrar.bank.deduct_from_bank(payment)
+        self.enter.get_customer_payments.append(payment)
+        self.add_to_total(payment)
+        print("Party Order Total: $", self.order_total)
+        print("****************************************************************************\n")
+
+    def create_items(self, inventory):
+        print("\n")
+        inventory.avail_items()
+        print("\nType \"1\" to purchase a Book")
+        print("Type \"2\" to purchase a CD")
+        print("Type \"3\" to purchase a DVD")
+        print("Type \"4\" to display the total inventory value")
+        print("Type \"5\" to compare two items")
+        return input("Which product? ")
+
+    def party_total(self, party_total):
+        self.line_total = party_total
+        premium = False
+        i = 0
+        while i < self.line_total:
+            customer_num = i + 1
+            customer_name = input("Name? ")
+            premium_member = input("Premium Membership? (y/n)")
+            if premium_member.lower().__eq__('y'):
+                premium = True
+            self.customer_line.append(customer_name)
+            upgraded = Upgrade(self.client(customer_name, premium, None), customer_name)
+            if premium:
+                upgraded.make_premium()
+            else:
+                upgraded.make_standard()
+            upgraded.display_customers()
+            i += 1
+
+    def handle_customer(self):
+        if not (len(self.customer_line) == 0):
+            return self.customer_line.pop()
+        else:
+            return None
+
+    def get_line_total(self):
+        return self.line_total
