@@ -8,7 +8,6 @@ class Client:
     premium: bool
     payment_method: str
     register: Registrar
-
     def __init__(self, name, member_type, payment_type):
         self.name = name
         self.premium = member_type
