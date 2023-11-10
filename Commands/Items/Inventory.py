@@ -13,27 +13,27 @@ class Inventory:
                 DVD("Back in Black", True, 10.75, 12, 1000), DVD("The Planets", True, 25.25, 13, 1025),
                 DVD("Ride of the Valkyries", True, 12.25, 14, 1202)]
 
-    def inventory_value(self, in_stock):
+    def inventory_value(self):
         total = 0
-        for items in in_stock:
+        for items in self.in_stock:
             total += self.in_stock.pop(items)
         return total
 
-    def init_items(self, in_stock):
-        self.avail_items(self.in_stock)
+    def init_items(self):
+        self.avail_items()
         print("Total cost of inventory: ")
-        print(f"$ {self.inventory_value(self.in_stock)}")
+        print(f"$ {self.inventory_value()}")
 
-    def handle_restock(self, in_stock):
+    def handle_restock(self):
         print("Sold products: ")
-        self.sold_items(self.in_stock)
+        self.sold_items()
         sold_prod_ID = input("Select a product type to restock (select by ID): ")
-        for items in in_stock:
+        for items in self.in_stock:
             if self.in_stock[items].ID == sold_prod_ID:
                 print(f"Restocked: {self.in_stock[items].itemName}")
                 self.in_stock[items].status = True
 
-    def add_item(self, in_stock, item_type, item_amount):
+    def add_item(self, item_type, item_amount):
         if item_type == 1:
             while item_amount > 0:
                 item_price = input("CD price? ")
@@ -59,19 +59,19 @@ class Inventory:
                 self.in_stock.append(Book(item_name, True, item_price, item_ID, item_length))
                 item_amount -= 1
         print("Current Inventory")
-        self.avail_items(self.in_stock)
+        self.avail_items()
 
-    def avail_items(self, in_stock):
-        for items in in_stock:
+    def avail_items(self):
+        for items in self.in_stock:
             if isinstance(self.in_stock[items], CD) and self.in_stock[items].status:
-                self.init_items(self.in_stock[items])
+                self.init_items()
             elif isinstance(self.in_stock[items], Book) and self.in_stock[items].status:
-                self.init_items(self.in_stock[items])
+                self.init_items()
             elif isinstance(self.in_stock[items], DVD) and self.in_stock[items].status:
-                self.init_items(self.in_stock[items])
+                self.init_items()
 
-    def sold_items(self, in_stock):
-        for item in in_stock:
+    def sold_items(self):
+        for item in self.in_stock:
             if not self.in_stock[item].status:
                 print("Name: ", self.in_stock[item].itemName,
                       "\nPrice: ", self.in_stock[item].price,
@@ -83,15 +83,16 @@ class Inventory:
                 elif isinstance(self.in_stock[item], DVD):
                     print("\nDVD Length: ", self.in_stock[item].dvd_length)
 
-    def compare_items(self, in_stock):
-        self.avail_items(self.in_stock)
+    def compare_items(self):
+        self.avail_items()
         id_1, id_2 = input("Select two items by ID to compare: ").split()
         compare_items = []
-        for items in in_stock:
-            for item in in_stock:
+        for items in self.in_stock:
+            for item in self.in_stock:
                 if item.ID == id_1 or item.ID == id_2:  # Simplify the condition
                     print("Name: ", item.itemName)
                     compare_items.append(self.instantiate_item(item))
+
     @staticmethod
     def instantiate_item(item):
         return item.__class__(

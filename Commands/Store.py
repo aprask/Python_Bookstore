@@ -34,4 +34,16 @@ class Store:
                 break
             # call user_bank
 
-    # def user_bank(self, ID):
+    def user_bank(self, ID):
+        if self.registrar.enter.can_purchase(ID):
+            customer_name = self.registrar.handle_customer()
+            print(customer_name, "'s order:\n")
+            while True:
+                self.item_ID_track = self.registrar.create_items(self.inventory)
+                if self.item_ID_track == 5:
+                    self.inventory.compare_items()
+                    continue
+                elif self.item_ID_track == 4:
+                    print("Total Cost of Inventory: $" + self.inventory.inventory_value())
+
+
